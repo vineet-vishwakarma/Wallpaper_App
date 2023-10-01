@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 class Wallpaper extends StatefulWidget {
   const Wallpaper({super.key});
@@ -9,6 +12,27 @@ class Wallpaper extends StatefulWidget {
 }
 
 class _WallpaperState extends State<Wallpaper> {
+  List images = [];
+  @override
+  void initState() {
+    super.initState();
+    fetchApi();
+  }
+
+  fetchApi() async {
+    await http.get(Uri.parse('https://api.pexels.com/v1/curated?per_page=80'),
+        headers: {
+          'Authorization':
+              'J0yI0Jok5Ex9lQHhsFqWV8E30RHtJrMJ7kPlKHhegr3BXH2wcIc7HcFp'
+        }).then((value) {
+      Map result = jsonDecode(value.body);
+      setState(() {
+        images = result['photos'];
+      });
+      print(images.length);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
