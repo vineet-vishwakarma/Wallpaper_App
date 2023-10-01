@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +12,7 @@ class Wallpaper extends StatefulWidget {
 
 class _WallpaperState extends State<Wallpaper> {
   List images = [];
+  int page = 1;
   @override
   void initState() {
     super.initState();
@@ -29,7 +29,25 @@ class _WallpaperState extends State<Wallpaper> {
       setState(() {
         images = result['photos'];
       });
-      print(images.length);
+      // print(images.length);
+    });
+  }
+
+  loadMore() async {
+    setState(() {
+      page++;
+    });
+    String url = 'https://api.pexels.com/v1/curated?per_page=80&page=$page';
+    await http.get(Uri.parse(url),
+        headers: {
+          'Authorization':
+              'J0yI0Jok5Ex9lQHhsFqWV8E30RHtJrMJ7kPlKHhegr3BXH2wcIc7HcFp'
+        }).then((value) {
+      Map result = jsonDecode(value.body);
+      setState(() {
+        images.addAll(result['photos']);
+      });
+      // print(images.length);
     });
   }
 
@@ -55,7 +73,7 @@ class _WallpaperState extends State<Wallpaper> {
             Expanded(
               child: Container(
                 child: GridView.builder(
-                  itemCount: 80,
+                  itemCount: images.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 2,
@@ -64,23 +82,30 @@ class _WallpaperState extends State<Wallpaper> {
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       color: Colors.white,
+                      child: Image.network(
+                        images[index]['src']['tiny'],
+                        fit: BoxFit.cover,
+                      ),
                     );
                   },
                 ),
               ),
             ),
-            Container(
-              height: 60,
-              width: double.infinity,
-              color: Colors.black,
-              child: Center(
-                child: Text(
-                  'Load More',
-                  style: GoogleFonts.lato(
-                    textStyle: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
+            InkWell(
+              onTap: () => loadMore(),
+              child: Container(
+                height: 60,
+                width: double.infinity,
+                color: Colors.black,
+                child: Center(
+                  child: Text(
+                    'Load More',
+                    style: GoogleFonts.lato(
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
                 ),
