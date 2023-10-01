@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:wallpaper_app/fullscreen.dart';
 
 class Wallpaper extends StatefulWidget {
   const Wallpaper({super.key});
@@ -38,11 +39,10 @@ class _WallpaperState extends State<Wallpaper> {
       page++;
     });
     String url = 'https://api.pexels.com/v1/curated?per_page=80&page=$page';
-    await http.get(Uri.parse(url),
-        headers: {
-          'Authorization':
-              'J0yI0Jok5Ex9lQHhsFqWV8E30RHtJrMJ7kPlKHhegr3BXH2wcIc7HcFp'
-        }).then((value) {
+    await http.get(Uri.parse(url), headers: {
+      'Authorization':
+          'J0yI0Jok5Ex9lQHhsFqWV8E30RHtJrMJ7kPlKHhegr3BXH2wcIc7HcFp'
+    }).then((value) {
       Map result = jsonDecode(value.body);
       setState(() {
         images.addAll(result['photos']);
@@ -80,11 +80,21 @@ class _WallpaperState extends State<Wallpaper> {
                       childAspectRatio: 2 / 3,
                       mainAxisSpacing: 2),
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      color: Colors.white,
-                      child: Image.network(
-                        images[index]['src']['tiny'],
-                        fit: BoxFit.cover,
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FullScreen(
+                                  imageurl: images[index]['src']['large2x'],
+                                )));
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        child: Image.network(
+                          images[index]['src']['tiny'],
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     );
                   },
