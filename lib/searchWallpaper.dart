@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -106,7 +107,32 @@ class _searchWallpaperState extends State<searchWallpaper> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 0),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              query.text != ''
+                                  ? Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            searchWallpaper(query: query.text),
+                                      ),
+                                    )
+                                  : showDialog(
+                                      context: context,
+                                      builder: (_) => CupertinoAlertDialog(
+                                        title: Text('Nothing Searched'),
+                                        content: Text('Search Something'),
+                                        actions: [
+                                          CupertinoActionSheet(
+                                            cancelButton: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Close')),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                            },
                             child: const Icon(
                               Icons.search,
                               size: 35,
