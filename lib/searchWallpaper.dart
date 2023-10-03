@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:wallpaper_app/fullscreen.dart';
-import 'package:wallpaper_app/searchWallpaper.dart';
 
-class Wallpaper extends StatefulWidget {
-  const Wallpaper({super.key});
+// ignore: camel_case_types
+class searchWallpaper extends StatefulWidget {
+  final String query;
+  const searchWallpaper({super.key, required this.query});
 
   @override
-  State<Wallpaper> createState() => _WallpaperState();
+  State<searchWallpaper> createState() => _searchWallpaperState();
 }
 
-class _WallpaperState extends State<Wallpaper> {
+// ignore: camel_case_types
+class _searchWallpaperState extends State<searchWallpaper> {
   TextEditingController query = TextEditingController();
   List images = [];
   int page = 1;
@@ -23,7 +25,9 @@ class _WallpaperState extends State<Wallpaper> {
   }
 
   fetchApi() async {
-    await http.get(Uri.parse('https://api.pexels.com/v1/curated?per_page=80'),
+    await http.get(
+        Uri.parse(
+            'https://api.pexels.com/v1/search?query=${widget.query}&per_page=80'),
         headers: {
           'Authorization':
               'J0yI0Jok5Ex9lQHhsFqWV8E30RHtJrMJ7kPlKHhegr3BXH2wcIc7HcFp'
@@ -39,7 +43,8 @@ class _WallpaperState extends State<Wallpaper> {
     setState(() {
       page++;
     });
-    String url = 'https://api.pexels.com/v1/curated?per_page=80&page=$page';
+    String url =
+        'https://api.pexels.com/v1/search?query=${widget.query}&per_page=80&page=$page';
     await http.get(Uri.parse(url), headers: {
       'Authorization':
           'J0yI0Jok5Ex9lQHhsFqWV8E30RHtJrMJ7kPlKHhegr3BXH2wcIc7HcFp'
@@ -66,8 +71,6 @@ class _WallpaperState extends State<Wallpaper> {
               fontWeight: FontWeight.bold,
             )),
           ),
-          // actions: [
-          // ],
         ),
         body: Column(
           children: [
@@ -82,7 +85,7 @@ class _WallpaperState extends State<Wallpaper> {
                         padding: const EdgeInsets.only(
                             top: 0, bottom: 16.0, left: 50, right: 0),
                         child: SearchBar(
-                          hintText: 'eg. Home,Cars',
+                          hintText: widget.query,
                           hintStyle: const MaterialStatePropertyAll(
                               TextStyle(color: Colors.white30)),
                           controller: query,
