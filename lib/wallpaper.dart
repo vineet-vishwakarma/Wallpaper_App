@@ -116,15 +116,15 @@ class _WallpaperState extends State<Wallpaper> {
                                   : showDialog(
                                       context: context,
                                       builder: (_) => CupertinoAlertDialog(
-                                        title: Text('Nothing Searched'),
-                                        content: Text('Search Something'),
+                                        title: const Text('Nothing Searched'),
+                                        content: const Text('Search Something'),
                                         actions: [
                                           CupertinoActionSheet(
                                             cancelButton: TextButton(
                                                 onPressed: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('Close')),
+                                                child: const Text('Close')),
                                           ),
                                         ],
                                       ),
