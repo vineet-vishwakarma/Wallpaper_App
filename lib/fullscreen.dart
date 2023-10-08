@@ -60,7 +60,8 @@ class _FullScreenState extends State<FullScreen> {
                 child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
-                    Expanded(
+                    Align(
+                      alignment: Alignment.center,
                       child: Container(
                         child: Image.network(
                           widget.imageurl,
@@ -87,9 +88,9 @@ class _FullScreenState extends State<FullScreen> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 60,
-              ),
+              // SizedBox(
+              //   height: 60,
+              // ),
               InkWell(
                 onTap: () {
                   setWallpaper();
