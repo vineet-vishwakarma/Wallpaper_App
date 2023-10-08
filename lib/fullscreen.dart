@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_downloader/image_downloader.dart';
+import 'package:http/http.dart';
+import 'package:open_app_file/open_app_file.dart';
+import 'package:wallpaper_app/wallpaper.dart';
 
 class FullScreen extends StatefulWidget {
   final String imageurl;
@@ -18,34 +21,31 @@ class FullScreen extends StatefulWidget {
 
 class _FullScreenState extends State<FullScreen> {
   Future<void> setWallpaper() async {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Center(child: Text('Set Wallpaper is processing...'))));
     int location = WallpaperManager.HOME_SCREEN;
     var file = await DefaultCacheManager().getSingleFile(widget.imageurl);
     // final bool result =
     await WallpaperManager.setWallpaperFromFile(file.path, location);
   }
 
-  Future<void> downloadWallpaper() async {
+  Future<void> downloadWallpaper(BuildContext context) async {
     ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Downloading Started')));
+        .showSnackBar(const SnackBar(content: Center(child: Text('Downloading...'))));
 
-    try {
-      // Saved with this method.
-      var imageId = await ImageDownloader.downloadImage(widget.imageurl);
-      if (imageId == null) {
-        return;
-      }
-
-      // Below is a method of obtaining saved image information.
-      var fileName = await ImageDownloader.findName(imageId);
-      var path = await ImageDownloader.findPath(imageId);
-      var size = await ImageDownloader.findByteSize(imageId);
-      var mimeType = await ImageDownloader.findMimeType(imageId);
-    } on PlatformException catch (error) {
-      print(error);
-    }
-
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Downloading Finished')));
+    var time = DateTime.now().millisecondsSinceEpoch;
+    var path = "/storage/emulated/0/Download/image-$time.jpg";
+    var file = File(path);
+    var res = await get(Uri.parse(widget.imageurl));
+    file.writeAsBytes(res.bodyBytes);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('Downloaded Successfully ✅'),
+      action: SnackBarAction(
+          label: "Open",
+          onPressed: () {
+            OpenAppFile.open(path);
+          }),
+    ));
   }
 
   @override
@@ -73,7 +73,7 @@ class _FullScreenState extends State<FullScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: FloatingActionButton(
-                          onPressed: () => downloadWallpaper(),
+                          onPressed: () => downloadWallpaper(context),
                           elevation: 10,
                           backgroundColor: Colors.black,
                           tooltip: 'Download Image',
@@ -88,10 +88,16 @@ class _FullScreenState extends State<FullScreen> {
                 ),
               ),
               SizedBox(
-                height: 55,
+                height: 60,
               ),
               InkWell(
-                onTap: () => setWallpaper(),
+                onTap: () {
+                  setWallpaper();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Align(
+                          alignment: Alignment.center,
+                          child: Text('Wallpaper Set Successfully ✅'))));
+                },
                 child: Container(
                   height: 60,
                   width: double.infinity,
