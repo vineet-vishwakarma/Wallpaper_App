@@ -63,15 +63,19 @@ class _searchWallpaperState extends State<searchWallpaper> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
-          centerTitle: true,
-          title: Text(
-            'Wallpaper App',
-            style: GoogleFonts.lato(
-                textStyle: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )),
+          // centerTitle: true,
+          title: Expanded(
+            child: Image.asset("assets/vertical_logo.png"),
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Icon(
+                Icons.menu,
+                color: Colors.black,
+              ),
+            ),
+          ],
         ),
         body: Column(
           children: [

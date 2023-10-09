@@ -59,16 +59,12 @@ class _WallpaperState extends State<Wallpaper> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           centerTitle: true,
-          title: Text(
-            'Wallpaper App',
-            style: GoogleFonts.lato(
-                textStyle: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )),
+          title: Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 50.0,horizontal: 50.0),
+              child: Image.asset("assets/vertical_logo.png"),
+            ),
           ),
-          // actions: [
-          // ],
         ),
         body: Column(
           children: [
