@@ -6,7 +6,6 @@ import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:open_app_file/open_app_file.dart';
-import 'package:wallpaper_app/wallpaper.dart';
 
 class FullScreen extends StatefulWidget {
   final String imageurl;
@@ -20,9 +19,9 @@ class FullScreen extends StatefulWidget {
 }
 
 class _FullScreenState extends State<FullScreen> {
-  Future<void> setWallpaper() async {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Center(child: Text('Set Wallpaper is processing...'))));
+  Future<void> setWallpaper(BuildContext context) async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Center(child: Text('Set Wallpaper is processing...'))));
     int location = WallpaperManager.HOME_SCREEN;
     var file = await DefaultCacheManager().getSingleFile(widget.imageurl);
     // final bool result =
@@ -30,8 +29,8 @@ class _FullScreenState extends State<FullScreen> {
   }
 
   Future<void> downloadWallpaper(BuildContext context) async {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Center(child: Text('Downloading...'))));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Center(child: Text('Downloading...'))));
 
     var time = DateTime.now().millisecondsSinceEpoch;
     var path = "/storage/emulated/0/Download/image-$time.jpg";
@@ -88,12 +87,9 @@ class _FullScreenState extends State<FullScreen> {
                   ],
                 ),
               ),
-              // SizedBox(
-              //   height: 60,
-              // ),
               InkWell(
                 onTap: () {
-                  setWallpaper();
+                  setWallpaper(context);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Align(
                           alignment: Alignment.center,

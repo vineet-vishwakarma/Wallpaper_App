@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:wallpaper_app/config.dart';
 import 'package:wallpaper_app/fullscreen.dart';
 
 // ignore: camel_case_types
@@ -31,7 +32,7 @@ class _searchWallpaperState extends State<searchWallpaper> {
             'https://api.pexels.com/v1/search?query=${widget.query}&per_page=80'),
         headers: {
           'Authorization':
-              'J0yI0Jok5Ex9lQHhsFqWV8E30RHtJrMJ7kPlKHhegr3BXH2wcIc7HcFp'
+              Config.apiKey
         }).then((value) {
       Map result = jsonDecode(value.body);
       setState(() {
@@ -64,9 +65,7 @@ class _searchWallpaperState extends State<searchWallpaper> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           // centerTitle: true,
-          title: Expanded(
-            child: Image.asset("assets/vertical_logo.png"),
-          ),
+          title: Image.asset("assets/vertical_logo.png",height: 100,),
           actions: [
             Padding(
               padding: const EdgeInsets.all(16.0),

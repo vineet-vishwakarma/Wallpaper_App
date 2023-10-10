@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:wallpaper_app/config.dart';
 import 'package:wallpaper_app/fullscreen.dart';
 import 'package:wallpaper_app/searchWallpaper.dart';
 
@@ -27,7 +28,7 @@ class _WallpaperState extends State<Wallpaper> {
     await http.get(Uri.parse('https://api.pexels.com/v1/curated?per_page=80'),
         headers: {
           'Authorization':
-              'J0yI0Jok5Ex9lQHhsFqWV8E30RHtJrMJ7kPlKHhegr3BXH2wcIc7HcFp'
+              Config.apiKey
         }).then((value) {
       Map result = jsonDecode(value.body);
       setState(() {
@@ -59,12 +60,7 @@ class _WallpaperState extends State<Wallpaper> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           centerTitle: true,
-          title: Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50.0,horizontal: 50.0),
-              child: Image.asset("assets/vertical_logo.png"),
-            ),
-          ),
+          title: Image.asset("assets/vertical_logo.png",height: 100,),
         ),
         body: Column(
           children: [
