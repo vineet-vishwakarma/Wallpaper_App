@@ -1,4 +1,4 @@
-![Screenshot 2023-10-03 183554](https://github.com/vineet-vishwakarma/Wallpaper_App/assets/116519930/bebdbe45-1c70-4faa-98ec-02f7d54a1ecd)
+<img width="960" alt="ui" src="https://github.com/vineet-vishwakarma/Wallpaper_App/assets/116519930/45b993e9-e2dd-4b17-8a54-84abac0bf512">
 
 # wallpaper_app
 
